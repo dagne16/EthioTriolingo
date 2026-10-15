@@ -7,7 +7,7 @@
   "rewrites": [
     {
       "source": "/api/:path*",
-      "destination": "https://ethiolingo-api.onrender.com/api/:path*"
+      "destination": "https://ethiotriolingo-api.onrender.com/api/:path*"
     },
     {
       "source": "/((?!api/).*)",
