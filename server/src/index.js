@@ -2,6 +2,17 @@ require('dotenv').config();
 const express = require('express');
 const cors = require('cors');
 const { initDb } = require('./db');
+const express = require('express');
+
+
+// 2. Configure CORS to allow your Vercel URL
+app.use(cors({
+  origin: 'https://vercel.app', 
+  methods: ['GET', 'POST', 'PUT', 'DELETE'],
+  credentials: true // Allow cookies or auth headers if your app uses them
+}));
+
+// Your regular routes go down here...
 
 const authRoutes = require('./routes/auth');
 const progressRoutes = require('./routes/progress');
