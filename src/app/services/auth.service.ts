@@ -137,8 +137,17 @@ export class AuthService {
   }
 
   private friendlyError(err: HttpErrorResponse): string {
-    if (err.error?.error) return err.error.error;
-    if (err.status === 0) return "Can't reach the server — is the backend running?";
+    // Our API returns { error: "message" }, but proxies/hosts (Vercel, Render) can return
+    // { error: { code, message } } or plain HTML — never assume it is a string.
+    const body: any = err.error;
+    const raw = body?.error ?? body?.message ?? body;
+    if (typeof raw === 'string' && raw.trim() && !raw.trim().startsWith('<')) return raw;
+    if (raw && typeof raw === 'object' && typeof raw.message === 'string') return raw.message;
+
+    if (err.status === 0) return "Can't reach the server. Check your internet connection and try again.";
+    if (err.status === 502 || err.status === 503 || err.status === 504) {
+      return 'The server is waking up. Please wait a few seconds and try again.';
+    }
     return 'Something went wrong. Please try again.';
   }
 }

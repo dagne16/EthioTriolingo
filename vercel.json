@@ -1,27 +1,17 @@
 {
   "$schema": "https://openapi.vercel.sh/vercel.json",
-  "services": {
-    "app": {
-      "root": ".",
-      "framework": "angular"
-    },
-    "server": {
-      "root": "server",
-      "framework": "express"
-    }
-  },
+  "framework": null,
+  "installCommand": "npm install",
+  "buildCommand": "npm run build",
+  "outputDirectory": "dist/amharic-lingo",
   "rewrites": [
     {
-      "source": "/api/(.*)",
-      "destination": {
-        "service": "server"
-      }
+      "source": "/api/:path*",
+      "destination": "https://ethiolingo-api.onrender.com/api/:path*"
     },
     {
-      "source": "/(.*)",
-      "destination": {
-        "service": "app"
-      }
+      "source": "/((?!api/).*)",
+      "destination": "/index.html"
     }
   ]
 }

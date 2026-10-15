@@ -3,7 +3,7 @@
 This project now has two parts that run together:
 
 - **Frontend** — the Angular app (this root folder)
-- **Backend** — a real API + database in `server/` (Node.js, Express, SQLite)
+- **Backend** — a real API + database in `server/` (Node.js, Express, Neon PostgreSQL)
 
 Accounts, XP, and lesson progress are now stored in a real database on the
 backend, with password-based login (bcrypt-hashed passwords, JWT sessions) —
@@ -68,24 +68,7 @@ Open **http://localhost:4200**.
 
 ## Deploying
 
-**Backend**: works on any Node host (Render, Railway, Fly.io, a VPS, etc.)
-that gives you a persistent disk — the SQLite file needs to survive restarts.
-Set these environment variables in production:
-- `JWT_SECRET` — a long random string (required; don't use the dev default)
-- `CORS_ORIGIN` — your deployed frontend's URL (comma-separate multiple)
-- `PORT` — usually set automatically by the host
-
-⚠️ **Serverless platforms (e.g. Vercel functions) will not work as-is** —
-their filesystem is ephemeral/read-only, so the SQLite file won't persist
-between requests. For serverless, swap `better-sqlite3` for a hosted
-Postgres/MySQL database (e.g. Supabase, Neon, PlanetScale) — the route logic
-in `server/src/routes/` would stay almost identical, just the `db.js` file
-and SQL syntax would change.
-
-**Frontend**: update `src/environments/environment.prod.ts` — set `apiUrl` to
-your deployed backend's URL (e.g. `'https://api.yourdomain.com/api''`), then
-`ng build` as usual. If frontend and backend are on different domains, make
-sure `CORS_ORIGIN` on the backend matches your frontend's exact origin.
+See **DEPLOY.md** (Vercel frontend + Render backend + Neon Postgres).
 
 ## Security notes (read before going live)
 

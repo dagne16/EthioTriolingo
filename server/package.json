@@ -1,7 +1,7 @@
 {
   "name": "ethiolingo-server",
   "version": "1.0.0",
-  "description": "EthioLingo backend API — auth, user profiles, learning progress, leaderboard",
+  "description": "EthioLingo backend API \u2014 auth, user profiles, learning progress, leaderboard",
   "main": "src/index.js",
   "type": "commonjs",
   "scripts": {
@@ -19,5 +19,8 @@
   },
   "devDependencies": {
     "nodemon": "^3.1.14"
+  },
+  "engines": {
+    "node": ">=18"
   }
 }
