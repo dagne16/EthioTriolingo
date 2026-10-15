@@ -2,15 +2,10 @@ require('dotenv').config();
 const express = require('express');
 const cors = require('cors');
 const { initDb } = require('./db');
-const express = require('express');
 
 
-// 2. Configure CORS to allow your Vercel URL
-app.use(cors({
-  origin: 'https://vercel.app', 
-  methods: ['GET', 'POST', 'PUT', 'DELETE'],
-  credentials: true // Allow cookies or auth headers if your app uses them
-}));
+
+
 
 // Your regular routes go down here...
 
@@ -19,6 +14,12 @@ const progressRoutes = require('./routes/progress');
 const leaderboardRoutes = require('./routes/leaderboard');
 
 const app = express();
+app.use(cors({
+  origin: 'https://vercel.com/dag-45-projects1/ethiotriolingo/BxxaKaSCmLmNyY2tMZCJu6vydJWj', 
+  methods: ['GET', 'POST', 'PUT', 'DELETE'],
+  credentials: true // Allow cookies or auth headers if your app uses them
+}));
+
 const PORT = process.env.PORT || 3000;
 
 const allowedOrigins = (process.env.CORS_ORIGIN || 'http://localhost:4200')
