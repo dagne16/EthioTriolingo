@@ -1,0 +1,21 @@
+<section class="auth-page container">
+  <div class="auth-card card">
+    <app-mascot [size]="56" color="purple"></app-mascot>
+    <h1>Welcome{{ auth.user()?.name ? ', ' + auth.user()?.name : '' }}!</h1>
+    <p class="subtitle">Which language do you understand best?</p>
+
+    <div class="lang-select-grid">
+      <button type="button" class="lang-select-card" *ngFor="let o of options"
+              [class.active]="selected === o.id" (click)="choose(o.id)">
+        <span class="lang-select-flag">{{ o.flag }}</span>
+        <span class="lang-select-name">{{ o.label }}</span>
+        <span class="lang-select-check">✓</span>
+      </button>
+    </div>
+
+    <p class="error" *ngIf="error">{{ error }}</p>
+    <button class="btn btn-purple full" type="button" [disabled]="loading" (click)="continue()">
+      {{ loading ? 'Saving…' : 'Proceed' }}
+    </button>
+  </div>
+</section>

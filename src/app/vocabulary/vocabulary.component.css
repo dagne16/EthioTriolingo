@@ -1,0 +1,97 @@
+.vocab-page { padding: 40px 20px 110px; }
+
+h1 { font-size: 28px; margin-bottom: 4px; }
+.subtitle { color: var(--gray); margin-bottom: 28px; }
+
+/* Same From/Learn picker cards as the Courses page, for a consistent feel. */
+.lang-picker { display: flex; align-items: center; gap: 14px; margin-bottom: 24px; }
+.lang-arrow { font-size: 22px; color: var(--gray); font-weight: 800; flex-shrink: 0; }
+.lang-card {
+  position: relative; flex: 1; max-width: 280px;
+  background: var(--card-bg); border: 2px solid var(--border); border-radius: 16px;
+  padding: 12px 16px; cursor: pointer; user-select: none;
+  transition: border-color 0.12s ease, box-shadow 0.12s ease;
+}
+.lang-card:hover, .lang-card.open { border-color: var(--purple); box-shadow: 0 6px 14px rgba(124,92,255,0.15); }
+.lang-card-label { margin: 0 0 4px; font-size: 11px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.5px; color: var(--gray); }
+.lang-card-current { display: flex; align-items: center; gap: 8px; font-weight: 700; font-size: 16px; color: var(--ink); }
+.flag-emoji { font-size: 20px; line-height: 1; }
+.chevron { margin-left: auto; color: var(--gray); transition: transform 0.15s ease; }
+.lang-card.open .chevron { transform: rotate(180deg); }
+
+.lang-dropdown {
+  list-style: none; margin: 0; padding: 8px;
+  position: absolute; top: calc(100% + 6px); left: 0; right: 0; z-index: 20;
+  background: var(--card-bg); border: 2px solid var(--purple); border-radius: 14px;
+  box-shadow: 0 12px 24px rgba(0,0,0,0.18);
+  opacity: 0; visibility: hidden; transform: translateY(-6px);
+  transition: opacity 0.12s ease, transform 0.12s ease, visibility 0.12s;
+}
+.lang-card:hover .lang-dropdown, .lang-card.open .lang-dropdown { opacity: 1; visibility: visible; transform: translateY(0); }
+.lang-dropdown li {
+  display: flex; align-items: center; gap: 10px;
+  padding: 9px 10px; border-radius: 10px; font-weight: 600; font-size: 14px; color: var(--ink);
+  transition: background 0.1s ease;
+}
+.lang-dropdown li:hover { background: var(--purple-light); }
+.lang-dropdown li.selected { background: var(--purple-light); font-weight: 800; }
+
+/* Search */
+.search-bar {
+  display: flex; align-items: center; gap: 10px;
+  background: var(--card-bg); border: 2px solid var(--border); border-radius: 14px;
+  padding: 10px 16px; margin-bottom: 28px; max-width: 480px;
+  transition: border-color 0.12s ease;
+}
+.search-bar:focus-within { border-color: var(--purple); }
+.search-icon { font-size: 15px; opacity: 0.7; }
+.search-bar input {
+  flex: 1; border: none; background: transparent; font-size: 15px; color: var(--ink);
+  outline: none;
+}
+.search-clear {
+  background: var(--panel); border: none; border-radius: 50%; width: 22px; height: 22px;
+  font-size: 11px; color: var(--gray); display: flex; align-items: center; justify-content: center;
+}
+.search-clear:hover { color: var(--ink); }
+
+/* Unit sections */
+.unit-list { display: flex; flex-direction: column; gap: 18px; }
+.unit-block { padding: 20px 22px; }
+.unit-block.locked { opacity: 0.7; background: var(--panel); }
+.unit-block-header { display: flex; align-items: center; gap: 10px; margin-bottom: 14px; }
+.unit-icon { font-size: 22px; }
+.unit-block-header h2 { margin: 0; font-size: 17px; flex: 1; }
+.practice-link { font-weight: 700; font-size: 13px; color: var(--purple); white-space: nowrap; }
+.practice-link:hover { text-decoration: underline; }
+.lock-badge {
+  font-size: 11px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.5px;
+  color: var(--gray); background: var(--card-bg); border: 2px solid var(--border);
+  padding: 4px 10px; border-radius: 999px; white-space: nowrap;
+}
+.locked-message { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 10px; }
+.locked-message p { margin: 0; color: var(--gray); font-size: 14px; }
+
+.word-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 8px 20px; }
+.word-row {
+  display: flex; align-items: center; gap: 8px;
+  padding: 8px 10px; border-radius: 10px; font-size: 14px;
+  transition: opacity 0.15s ease, background 0.1s ease;
+}
+.word-row:hover { background: var(--panel); }
+.word-row.dim { opacity: 0.3; }
+.word-source { color: var(--gray); flex: 1; }
+.word-arrow { color: var(--gray); font-size: 12px; }
+.word-target { font-weight: 700; color: var(--ink); text-align: right; }
+
+.no-results { color: var(--gray); text-align: center; padding: 40px 0; }
+
+@media (max-width: 600px) {
+  .vocab-page { padding: 24px 16px 100px; }
+  .lang-picker { gap: 8px; }
+  .lang-card { padding: 10px 12px; max-width: none; }
+  .lang-card-current { font-size: 14px; }
+  .lang-arrow { font-size: 16px; }
+  .word-grid { grid-template-columns: 1fr; }
+  .unit-block-header h2 { font-size: 15px; }
+}

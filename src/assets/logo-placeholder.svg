@@ -1,0 +1,18 @@
+<!--
+  PLACEHOLDER LOGO — replace this file with your real logo.
+  Keep the filename "logo-placeholder.svg" (or update the <img src> in
+  navbar.component.ts) and roughly this square aspect ratio for best results.
+-->
+<svg width="120" height="120" viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="logoGrad" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#9b7bff"/>
+      <stop offset="100%" stop-color="#5a3fe0"/>
+    </linearGradient>
+  </defs>
+  <circle cx="60" cy="60" r="58" fill="url(#logoGrad)"/>
+  <path d="M60 26 C74 26 85 37 85 51 C85 62 78 70 68 74 L68 88 C68 91 65 93 62 91 L50 82 C37 80 27 67 27 51 C27 37 46 26 60 26 Z"
+        fill="#ffffff" opacity="0.95"/>
+  <circle cx="47" cy="52" r="6" fill="#5a3fe0"/>
+  <circle cx="73" cy="52" r="6" fill="#5a3fe0"/>
+</svg>

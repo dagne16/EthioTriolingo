@@ -1,0 +1,154 @@
+<div class="tense-page" *ngIf="course">
+
+  <!-- ============ EXPLAINER ============ -->
+  <section class="container explainer" *ngIf="mode === 'explainer'">
+    <button class="close-btn" (click)="backToLearn()">✕ Back to {{ course.name }}</button>
+
+    <div class="explainer-head">
+      <app-mascot [size]="52"></app-mascot>
+      <div>
+        <h1>How Tenses Work in {{ course.name }}</h1>
+        <p class="subtitle">Present, Past, and Future — explained from {{ baseLabel }}.</p>
+      </div>
+    </div>
+
+    <div class="how-card card">
+      <p *ngIf="baseLang.lang()==='amharic'">
+        A <b>tense</b> tells you <em>when</em> something happens. In Amharic you already do this with
+        words like <span class="amh">ዛሬ (today)</span>, <span class="amh">ትናንት (yesterday)</span>, and
+        <span class="amh">ነገ (tomorrow)</span>. {{ course.name }} works the same way — you just say the
+        action itself a little differently for each time.
+      </p>
+      <p *ngIf="baseLang.lang()==='oromo'">
+        A <b>tense</b> tells you <em>when</em> something happens. In Afaan Oromo you already do this with
+        words like <span class="amh">Har'a (today)</span>, <span class="amh">Kaleessa (yesterday)</span>, and
+        <span class="amh">Boru (tomorrow)</span>. {{ course.name }} works the same way — you just say the
+        action itself a little differently for each time.
+      </p>
+      <p *ngIf="baseLang.lang()==='tigrigna'">
+        A <b>tense</b> tells you <em>when</em> something happens. In Tigrinya you already do this with
+        words like <span class="amh">ሎሚ (today)</span>, <span class="amh">ትማሊ (yesterday)</span>, and
+        <span class="amh">ጽባሕ (tomorrow)</span>. {{ course.name }} works the same way — you just say the
+        action itself a little differently for each time.
+      </p>
+      <p *ngIf="baseLang.lang()==='spanish'">
+        A <b>tense</b> tells you <em>when</em> something happens. In Spanish you already do this with
+        words like <span class="amh">hoy (today)</span>, <span class="amh">ayer (yesterday)</span>, and
+        <span class="amh">mañana (tomorrow)</span>. {{ course.name }} works the same way — you just say the
+        action itself a little differently for each time.
+      </p>
+      <p *ngIf="baseLang.lang()==='english'">
+        A <b>tense</b> tells you <em>when</em> something happens. In English you already do this with
+        words like <span class="amh">today</span>, <span class="amh">yesterday</span>, and
+        <span class="amh">tomorrow</span>. {{ course.name }} works the same way — you just say the
+        action itself a little differently for each time.
+      </p>
+    </div>
+
+    <div class="tense-table" *ngIf="sampleVerb">
+      <p class="table-caption">Example verb: <b>{{ sampleVerb.infinitive }}</b> — {{ verbGloss(sampleVerb) }}</p>
+      <div class="tense-row head">
+        <span></span>
+        <span>{{ baseLabel }} cue</span>
+        <span>{{ course.name }}</span>
+      </div>
+      <div class="tense-row">
+        <span class="tense-tag present">Present</span>
+        <span class="amh">{{ todayCue }}</span>
+        <span class="target speakable" (click)="speakWord(sampleVerb.present)">{{ sampleVerb.present }} 🔊</span>
+      </div>
+      <div class="tense-row">
+        <span class="tense-tag past">Past</span>
+        <span class="amh">{{ yesterdayCue }}</span>
+        <span class="target speakable" (click)="speakWord(sampleVerb.past)">{{ sampleVerb.past }} 🔊</span>
+      </div>
+      <div class="tense-row">
+        <span class="tense-tag future">Future</span>
+        <span class="amh">{{ tomorrowCue }}</span>
+        <span class="target speakable" (click)="speakWord(sampleVerb.future)">{{ sampleVerb.future }} 🔊</span>
+      </div>
+    </div>
+
+    <div class="verb-list card">
+      <p class="table-caption">More verbs you'll practice:</p>
+      <div class="verb-chip speakable" *ngFor="let v of verbs" (click)="speakWord(v.infinitive)">
+        <b>{{ v.infinitive }}</b> <span class="amh">— {{ verbGloss(v) }}</span> <span class="speaker-icon">🔊</span>
+      </div>
+    </div>
+
+    <p class="disclaimer" *ngIf="baseLang.lang()!=='amharic' && baseLang.lang()!=='spanish' && baseLang.lang()!=='english'">
+      Note: {{ baseLabel }} cues shown here use simplified beginner patterns to keep things clear —
+      there's more nuance in full grammar, but this gets you using real sentences right away.
+    </p>
+
+    <button class="btn btn-purple start-btn" (click)="startQuiz()">Start Practice →</button>
+  </section>
+
+  <!-- ============ QUIZ ============ -->
+  <ng-container *ngIf="mode === 'quiz'">
+    <div class="lesson-topbar container">
+      <button class="close-btn-icon" (click)="backToExplainer()">✕</button>
+      <div class="progress-bar">
+        <div class="progress-bar-fill" [style.width.%]="progressPercent"></div>
+      </div>
+      <div class="hearts">❤️ {{ hearts }}</div>
+    </div>
+
+    <div class="quiz-wrap container" *ngIf="hearts > 0 && currentQuestion as q">
+      <p class="prompt">Which form is <b>{{ tenseLabel(q.tense) }}</b> tense?</p>
+      <div class="amharic-card">
+        <app-mascot [size]="44"></app-mascot>
+        <div>
+          <p class="amh amharic-phrase">{{ q.cue }}</p>
+          <p class="infinitive-hint">Verb: <b>{{ q.infinitive }}</b></p>
+        </div>
+      </div>
+
+      <div class="options">
+        <button *ngFor="let opt of q.options"
+                class="option"
+                [class.selected]="selectedOption === opt && !answered"
+                [class.correct]="answered && opt === q.answer"
+                [class.incorrect]="answered && selectedOption === opt && opt !== q.answer"
+                [disabled]="answered"
+                (click)="selectOption(opt)">
+          {{ opt }}
+        </button>
+      </div>
+    </div>
+
+    <div class="feedback" *ngIf="hearts > 0" [class.feedback-correct]="answered && isCorrect" [class.feedback-incorrect]="answered && !isCorrect">
+      <ng-container *ngIf="answered">
+        <p *ngIf="isCorrect" class="feedback-text">{{ t('correct').primary }} <span class="en-caption">({{ t('correct').english }})</span></p>
+        <p *ngIf="!isCorrect" class="feedback-text">{{ t('correctAnswer').primary }} <b>{{ currentQuestion?.answer }}</b> <span class="en-caption">({{ t('correctAnswer').english }})</span></p>
+        <p class="explanation">💡 {{ currentQuestion?.explanation }}</p>
+      </ng-container>
+      <button class="btn btn-purple check-btn" *ngIf="!answered" [disabled]="!selectedOption" (click)="checkAnswer()">
+        {{ t('check').primary }} <span class="en-caption-btn">({{ t('check').english }})</span>
+      </button>
+      <button class="btn btn-purple check-btn" *ngIf="answered" (click)="next()">
+        {{ t('continue').primary }} <span class="en-caption-btn">({{ t('continue').english }})</span>
+      </button>
+    </div>
+
+    <div class="result container" *ngIf="hearts === 0">
+      <app-mascot [size]="90"></app-mascot>
+      <h2>{{ t('outOfHearts').primary }} <span class="en-caption">({{ t('outOfHearts').english }})</span></h2>
+      <p>{{ t('score').primary }} ({{ t('score').english }}): {{ correctCount }} / {{ questions.length }}</p>
+      <button class="btn btn-purple" (click)="retryQuiz()">{{ t('tryAgain').primary }} <span class="en-caption-btn">({{ t('tryAgain').english }})</span></button>
+      <button class="btn btn-outline" (click)="backToLearn()">{{ t('backToUnits').primary }} <span class="en-caption-btn">({{ t('backToUnits').english }})</span></button>
+    </div>
+  </ng-container>
+
+  <!-- ============ RESULT ============ -->
+  <div class="result container" *ngIf="mode === 'result'">
+    <app-mascot [size]="90"></app-mascot>
+    <h2>{{ t('unitComplete').primary }} <span class="en-caption">(Tense Practice Complete!)</span></h2>
+    <p>{{ course.name }} — Verb Tenses</p>
+    <p>{{ t('score').primary }} ({{ t('score').english }}): {{ correctCount }} / {{ questions.length }}</p>
+    <p class="xp-earned">⭐ +{{ xpEarned }} XP</p>
+    <button class="btn btn-purple" (click)="backToLearn()">{{ t('continueLearning').primary }} <span class="en-caption-btn">({{ t('continueLearning').english }})</span></button>
+    <button class="btn btn-outline" (click)="retryQuiz()">{{ t('practiceAgain').primary }} <span class="en-caption-btn">({{ t('practiceAgain').english }})</span></button>
+  </div>
+
+</div>

@@ -1,0 +1,104 @@
+<section class="container learn-page">
+
+  <div class="greeting" *ngIf="auth.isLoggedIn()">
+    <app-mascot class="greeting-avatar" [size]="44" [color]="auth.user()?.avatarColor || 'green'"></app-mascot>
+    <div>
+      <p class="greeting-hello">Welcome back,</p>
+      <h2 class="greeting-name">{{ auth.user()?.name }}</h2>
+    </div>
+    <span class="greeting-xp">⭐ {{ auth.user()?.xp || 0 }} XP</span>
+  </div>
+  <div class="greeting guest" *ngIf="!auth.isLoggedIn()">
+    <p>👋 <a routerLink="/signup">Sign up</a> or <a routerLink="/login">log in</a> to save your progress and appear on the leaderboard.</p>
+  </div>
+
+  <div class="lang-picker">
+    <div class="lang-card"
+         [class.open]="fromOpen"
+         (mouseenter)="fromOpen = true" (mouseleave)="fromOpen = false"
+         (click)="fromOpen = !fromOpen">
+      <p class="lang-card-label">From</p>
+      <div class="lang-card-current">
+        <span class="flag-emoji">{{ flagFor(baseLang.lang()) }}</span>
+        <span>{{ labelFor(baseLang.lang()) }}</span>
+        <span class="chevron">▾</span>
+      </div>
+      <ul class="lang-dropdown" (click)="$event.stopPropagation()">
+        <li *ngFor="let l of baseLanguageOptions; trackBy: trackById"
+            [class.selected]="l.id === baseLang.lang()"
+            (click)="selectBaseLanguage(l.id); fromOpen = false">
+          <span class="flag-emoji">{{ l.flag }}</span> {{ l.label }}
+        </li>
+      </ul>
+    </div>
+
+    <span class="lang-arrow">→</span>
+
+    <div class="lang-card"
+         [class.open]="toOpen"
+         (mouseenter)="toOpen = true" (mouseleave)="toOpen = false"
+         (click)="toOpen = !toOpen">
+      <p class="lang-card-label">Learn</p>
+      <div class="lang-card-current">
+        <app-flag [country]="selectedCourse.flag" [size]="22"></app-flag>
+        <span>{{ selectedCourse.name }}</span>
+        <span class="chevron">▾</span>
+      </div>
+      <ul class="lang-dropdown" (click)="$event.stopPropagation()">
+        <li *ngFor="let c of sortedAvailableCourses; trackBy: trackById"
+            [class.selected]="c.id === selectedCourseId"
+            (click)="selectCourse(c.id); toOpen = false">
+          <app-flag [country]="c.flag" [size]="18"></app-flag> {{ c.name }}
+        </li>
+      </ul>
+    </div>
+  </div>
+
+  <h1 class="amh">{{ nameFor(selectedCourse) }} <span class="latin">— {{ selectedCourse.name }} Path</span></h1>
+  <p class="subtitle">Complete each unit in order to unlock the next one.</p>
+
+  <a class="tense-cta" *ngIf="hasTenses" [routerLink]="['/tenses', selectedCourse.id]">
+    <span class="tense-cta-icon">🕰️</span>
+    <div>
+      <h3>How Tenses Work</h3>
+      <p>Learn Present, Past & Future — with a quick explainer and practice quiz.</p>
+    </div>
+    <span class="tense-cta-arrow">→</span>
+  </a>
+
+  <div class="path">
+    <div class="path-bg">
+
+      <a class="start-fab" [routerLink]="['/lesson', selectedCourse.id, nextUnit.id]">
+        {{ courseComplete ? 'Review' : 'Start' }}
+      </a>
+
+      <div class="path-nodes">
+        <div class="path-node-row"
+             *ngFor="let unit of selectedCourse.units; let i = index; trackBy: trackByUnitId"
+             [style.margin-left]="nodeOffset(i)">
+
+          <app-mascot class="path-character left" *ngIf="i === 3" [size]="72" [color]="auth.user()?.avatarColor || 'green'"></app-mascot>
+          <app-mascot class="path-character right" *ngIf="i === 9" [size]="72" [color]="auth.user()?.avatarColor || 'orange'"></app-mascot>
+
+          <a class="path-node"
+             [class.completed]="isUnitComplete(unit)"
+             [class.locked]="!isUnitUnlocked(i)"
+             [routerLink]="isUnitUnlocked(i) ? ['/lesson', selectedCourse.id, unit.id] : null">
+            <span *ngIf="isUnitComplete(unit)">✓</span>
+            <span *ngIf="!isUnitComplete(unit) && isUnitUnlocked(i)">{{ unit.icon }}</span>
+            <span *ngIf="!isUnitUnlocked(i)">🔒</span>
+          </a>
+          <p class="path-node-label">{{ unit.title }}</p>
+        </div>
+
+        <div class="path-chest">
+          <span class="chest-icon">{{ courseComplete ? '🏆' : '🎁' }}</span>
+          <p>{{ courseComplete ? 'Course complete!' : 'Finish all lessons to unlock' }}</p>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+</section>

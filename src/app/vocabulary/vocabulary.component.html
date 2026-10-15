@@ -1,0 +1,84 @@
+<section class="container vocab-page">
+
+  <h1>📖 Vocabulary</h1>
+  <p class="subtitle">Browse every word in {{ selectedCourse.name }} — {{ unlockedWordCount }} of {{ totalWordCount }} words unlocked so far.</p>
+
+  <div class="lang-picker">
+    <div class="lang-card"
+         [class.open]="fromOpen"
+         (mouseenter)="fromOpen = true" (mouseleave)="fromOpen = false"
+         (click)="fromOpen = !fromOpen">
+      <p class="lang-card-label">From</p>
+      <div class="lang-card-current">
+        <span class="flag-emoji">{{ flagFor(baseLang.lang()) }}</span>
+        <span>{{ labelFor(baseLang.lang()) }}</span>
+        <span class="chevron">▾</span>
+      </div>
+      <ul class="lang-dropdown" (click)="$event.stopPropagation()">
+        <li *ngFor="let l of baseLanguageOptions; trackBy: trackById"
+            [class.selected]="l.id === baseLang.lang()"
+            (click)="selectBaseLanguage(l.id); fromOpen = false">
+          <span class="flag-emoji">{{ l.flag }}</span> {{ l.label }}
+        </li>
+      </ul>
+    </div>
+
+    <span class="lang-arrow">→</span>
+
+    <div class="lang-card"
+         [class.open]="toOpen"
+         (mouseenter)="toOpen = true" (mouseleave)="toOpen = false"
+         (click)="toOpen = !toOpen">
+      <p class="lang-card-label">Learn</p>
+      <div class="lang-card-current">
+        <app-flag [country]="selectedCourse.flag" [size]="22"></app-flag>
+        <span>{{ selectedCourse.name }}</span>
+        <span class="chevron">▾</span>
+      </div>
+      <ul class="lang-dropdown" (click)="$event.stopPropagation()">
+        <li *ngFor="let c of sortedAvailableCourses; trackBy: trackById"
+            [class.selected]="c.id === selectedCourseId"
+            (click)="selectCourse(c.id); toOpen = false">
+          <app-flag [country]="c.flag" [size]="18"></app-flag> {{ c.name }}
+        </li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="search-bar">
+    <span class="search-icon">🔍</span>
+    <input type="text" [(ngModel)]="search" placeholder="Search words in {{ selectedCourse.name }} or {{ labelFor(baseLang.lang()) }}...">
+    <button type="button" class="search-clear" *ngIf="search" (click)="search=''" aria-label="Clear search">✕</button>
+  </div>
+
+  <div class="unit-list">
+    <div class="unit-block card" *ngFor="let entry of visibleUnitEntries; trackBy: trackByUnitId" [class.locked]="!entry.unlocked">
+      <div class="unit-block-header">
+        <span class="unit-icon">{{ entry.unlocked ? entry.unit.icon : '🔒' }}</span>
+        <h2>{{ unitTitle(entry.unit) }}</h2>
+        <span class="lock-badge" *ngIf="!entry.unlocked">Locked</span>
+        <a class="practice-link" *ngIf="entry.unlocked" [routerLink]="['/lesson', selectedCourse.id, entry.unit.id]">
+          {{ isUnitComplete(entry.unit) ? 'Review →' : 'Practice →' }}
+        </a>
+      </div>
+
+      <div class="word-grid" *ngIf="entry.unlocked">
+        <div class="word-row" *ngFor="let w of wordsFor(entry.unit); trackBy: trackByWord" [class.dim]="!matchesSearch(w)">
+          <span class="word-source">{{ w.sourcePhrase }}</span>
+          <span class="word-arrow">→</span>
+          <span class="word-target">{{ w.answer }}</span>
+        </div>
+      </div>
+
+      <div class="locked-message" *ngIf="!entry.unlocked">
+        <p>Complete the previous lesson to unlock these {{ entry.unit.words.length }} words.</p>
+        <a class="practice-link" [routerLink]="['/lesson', selectedCourse.id, selectedCourse.units[entry.index - 1].id]">
+          Go to previous lesson →
+        </a>
+      </div>
+    </div>
+
+    <p class="no-results" *ngIf="visibleUnitEntries.length === 0">No unlocked words match "{{ search }}".</p>
+  </div>
+
+</section>

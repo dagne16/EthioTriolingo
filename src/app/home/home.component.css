@@ -1,0 +1,160 @@
+.hero { position: relative; background: var(--bg); overflow: hidden; }
+
+.social-rail {
+  position: fixed; right: 18px; top: 50%; transform: translateY(-50%);
+  display: flex; flex-direction: column; gap: 14px; z-index: 5;
+}
+.social-rail a {
+  width: 36px; height: 36px; border-radius: 50%; background: var(--panel);
+  border: 2px solid var(--border); display: flex; align-items: center; justify-content: center;
+  font-size: 15px; transition: transform 0.15s ease, border-color 0.15s ease;
+}
+.social-rail a:hover { transform: scale(1.15) rotate(-6deg); border-color: var(--purple); }
+.social-rail a:active { transform: scale(0.9); }
+
+/* Full-bleed two-panel split: description on the left, sign up/log in on the right. */
+.hero-grid { display: flex; align-items: stretch; min-height: 640px; flex-wrap: wrap; }
+.hero-copy-panel { flex: 1 1 480px; display: flex; align-items: center; padding: 60px 48px; }
+.hero-copy { max-width: 520px; margin: 0 auto; width: 100%; }
+
+.eyebrow { display: flex; align-items: center; gap: 8px; font-weight: 800; color: var(--purple); font-size: 13px; letter-spacing: 1px; margin-bottom: 10px; }
+.eyebrow-bar { width: 20px; height: 3px; background: var(--purple); display: inline-block; border-radius: 3px; }
+
+.hero-copy h1 { font-size: 40px; line-height: 1.2; color: var(--ink); }
+.hero-copy .accent { color: var(--purple); }
+.lede { font-size: 16px; color: var(--gray); margin: 18px 0 26px; max-width: 460px; }
+
+.hero-actions { display: flex; gap: 16px; flex-wrap: wrap; }
+.btn-outline { background: var(--bg); color: var(--purple); border: 2px solid var(--purple); border-bottom: 4px solid var(--purple); }
+
+.hero-auth-panel {
+  flex: 1 1 480px; position: relative; display: flex; align-items: center; justify-content: center;
+  padding: 60px 40px; overflow: hidden;
+  background: linear-gradient(150deg, var(--purple) 0%, #5a3fe0 100%);
+}
+.hero-auth-panel::before, .hero-auth-panel::after {
+  content: ''; position: absolute; border-radius: 50%; background: #fff; opacity: 0.08;
+}
+.hero-auth-panel::before { width: 260px; height: 260px; top: -80px; right: -60px; }
+.hero-auth-panel::after { width: 180px; height: 180px; bottom: -70px; left: -50px; }
+
+/* Auth widget embedded in the hero — description and sign-up/log-in live on one page. */
+.auth-widget {
+  position: relative; z-index: 1; width: 100%; max-width: 400px;
+  padding: 30px 28px 32px; border-radius: 22px;
+  background: var(--card-bg); border: none;
+  box-shadow: 0 24px 50px rgba(0,0,0,0.25);
+}
+.auth-widget-eyebrow { margin: 0; font-size: 12px; font-weight: 800; letter-spacing: 1px; text-transform: uppercase; color: var(--purple); }
+.auth-widget-title { margin: 2px 0 18px; font-size: 21px; color: var(--ink); }
+.auth-toggle { display: flex; gap: 4px; margin-bottom: 18px; background: var(--panel); border-radius: 999px; padding: 4px; }
+.auth-toggle-btn { flex: 1; padding: 10px 0; border-radius: 999px; font-weight: 800; font-size: 14px; color: var(--gray); transition: background 0.15s ease, color 0.15s ease; }
+.auth-toggle-btn.active { background: var(--purple); color: #fff; }
+.auth-toggle-btn:hover:not(.active) { color: var(--ink); }
+
+/* The embedded <app-signup>/<app-login> ship with their own full-page layout;
+   collapse that down to fit compactly inside this hero card. */
+.auth-widget ::ng-deep .auth-page { min-height: auto; padding: 0; display: block; }
+.auth-widget ::ng-deep .auth-card { padding: 0; max-width: none; }
+.auth-widget ::ng-deep .auth-card > app-mascot { display: none; }
+.auth-widget ::ng-deep .auth-card h1 { display: none; }
+.auth-widget ::ng-deep .subtitle { display: none; }
+.auth-widget ::ng-deep .auth-card form label {
+  display: block; font-weight: 700; font-size: 13px; color: var(--ink); margin-bottom: 12px;
+}
+.auth-widget ::ng-deep .auth-card form input {
+  width: 100%; margin-top: 6px; padding: 12px 14px; border-radius: 12px;
+  border: 2px solid var(--border); background: var(--panel); font-size: 14px; color: var(--ink);
+  transition: border-color 0.15s ease, background 0.15s ease;
+}
+.auth-widget ::ng-deep .auth-card form input:focus {
+  outline: none; border-color: var(--purple); background: var(--card-bg);
+}
+
+.feature-tabs-section { padding: 10px 20px 50px; }
+
+.feature-cards {
+  display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px;
+}
+.feature-card {
+  background: var(--card-bg); border: 2px solid var(--border); border-radius: 18px;
+  padding: 26px; box-shadow: 0 10px 30px rgba(124,92,255,0.08);
+  text-align: left; width: 100%; font-family: inherit; cursor: pointer;
+  transition: border-color 0.12s ease, transform 0.15s ease, box-shadow 0.15s ease;
+}
+.feature-card:hover { border-color: var(--purple); transform: translateY(-4px); box-shadow: 0 14px 28px rgba(124,92,255,0.18); }
+.feature-card:active { transform: translateY(0) scale(0.98); box-shadow: 0 4px 10px rgba(124,92,255,0.15); }
+.feature-card.active { border-color: var(--purple); background: var(--purple-light); }
+.feature-icon { font-size: 30px; margin-bottom: 10px; transition: transform 0.2s ease; }
+.feature-card:hover .feature-icon { transform: scale(1.15) rotate(-4deg); }
+.feature-card h3 { font-size: 17px; margin-bottom: 6px; }
+.feature-card p { color: var(--gray); font-size: 14px; margin: 0; }
+
+/* Alternating accent tints, matching the reference design */
+.feature-card.tint-a { background: var(--tint-teal); border-color: var(--tint-teal-border); }
+.feature-card.tint-b { background: var(--tint-purple); border-color: var(--tint-purple-border); }
+.feature-card.tint-a:hover, .feature-card.tint-b:hover { border-color: var(--purple); }
+.feature-card.tint-a h3, .feature-card.tint-a p,
+.feature-card.tint-b h3, .feature-card.tint-b p { color: var(--ink); }
+
+.feature-detail {
+  display: flex; align-items: flex-start; gap: 14px;
+  background: var(--tint-teal); border: 2px solid var(--tint-teal-border);
+  border-radius: 16px; padding: 18px 22px; margin-top: 18px;
+}
+.feature-detail-icon { font-size: 26px; }
+.feature-detail p { margin: 0; color: var(--ink); font-size: 15px; line-height: 1.5; }
+
+.site-footer {
+  margin: 40px 20px 20px; border-radius: 24px; overflow: hidden;
+  background: #17181c; box-shadow: 0 16px 36px rgba(0,0,0,0.3);
+}
+.footer-inner {
+  display: flex; flex-direction: column; align-items: center; gap: 20px;
+  padding: 32px 20px 26px;
+}
+.footer-social { display: flex; gap: 14px; }
+.social-circle {
+  width: 42px; height: 42px; border-radius: 50%; background: #fff; color: #17181c;
+  display: flex; align-items: center; justify-content: center;
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+.social-circle:hover { transform: translateY(-3px) scale(1.08); box-shadow: 0 8px 16px rgba(0,0,0,0.35); }
+.social-circle:active { transform: translateY(0) scale(0.94); }
+
+.footer-links { display: flex; gap: 26px; flex-wrap: wrap; justify-content: center; }
+.footer-links a { color: #d6d6db; font-size: 14px; font-weight: 600; transition: color 0.15s ease; }
+.footer-links a:hover { color: #fff; }
+
+.footer-bottom {
+  background: #0f1013; padding: 14px 20px; text-align: center;
+}
+.footer-bottom p {
+  margin: 0; color: #9a9aa2; font-size: 12.5px;
+  display: flex; align-items: center; justify-content: center; gap: 6px; flex-wrap: wrap;
+}
+
+@media (max-width: 600px) {
+  .site-footer { margin: 30px 12px 16px; border-radius: 18px; }
+  .footer-inner { padding: 26px 16px 20px; gap: 16px; }
+  .footer-links { gap: 16px 20px; }
+  .footer-links a { font-size: 13px; }
+  .footer-bottom p { font-size: 11.5px; }
+}
+
+@media (max-width: 900px) {
+  .feature-cards { grid-template-columns: 1fr; }
+}
+@media (max-width: 800px) {
+  .social-rail { display: none; }
+}
+@media (max-width: 600px) {
+  .hero-grid { min-height: auto; }
+  .hero-copy h1 { font-size: 28px; }
+  .lede { font-size: 15px; }
+  .hero-actions .btn { flex: 1; text-align: center; padding: 14px 16px; font-size: 14px; }
+  .hero-copy-panel, .hero-auth-panel { padding: 32px 20px; }
+  .auth-widget { padding: 24px 18px 26px; }
+  .feature-tabs-section { padding: 6px 16px 30px; }
+  .feature-card { padding: 20px; }
+}

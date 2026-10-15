@@ -1,0 +1,22 @@
+<section class="auth-page container">
+  <div class="auth-card card mascot-page">
+    <app-mascot [size]="72" [color]="selected"></app-mascot>
+    <h1>Welcome{{ auth.user()?.name ? ', ' + auth.user()?.name : '' }}!</h1>
+    <p class="subtitle">Your account is all set — pick a mascot to make it yours.</p>
+
+    <div class="avatar-grid">
+      <button type="button" class="avatar-tile"
+              *ngFor="let c of avatarOptions"
+              [class.active]="selected === c"
+              [attr.aria-label]="c + ' mascot'"
+              (click)="choose(c)">
+        <app-mascot [size]="44" [color]="c"></app-mascot>
+      </button>
+    </div>
+
+    <p class="error" *ngIf="error">{{ error }}</p>
+    <button class="btn btn-purple full" type="button" [disabled]="loading" (click)="continue()">
+      {{ loading ? 'Saving…' : 'Continue to Courses' }}
+    </button>
+  </div>
+</section>

@@ -1,0 +1,37 @@
+<section class="container leaderboard-page">
+  <div class="lb-header">
+    <app-mascot [size]="56"></app-mascot>
+    <div>
+      <h1>🏆 Leaderboard</h1>
+      <p class="subtitle">Earn XP by completing lessons to climb the ranks — updates live.</p>
+    </div>
+  </div>
+
+  <div class="my-rank-banner" *ngIf="auth.isLoggedIn() && myRank">
+    You're ranked <b>#{{ myRank }}</b> with <b>{{ auth.user()?.xp || 0 }} XP</b>
+  </div>
+
+  <div class="lb-list card" *ngIf="!loading() && !loadError()">
+    <div class="lb-row" *ngFor="let r of rows()" [class.me]="r.isMe">
+      <span class="lb-rank" [class.top1]="r.rank===1" [class.top2]="r.rank===2" [class.top3]="r.rank===3">
+        {{ r.rank <= 3 ? (r.rank===1 ? '🥇' : r.rank===2 ? '🥈' : '🥉') : r.rank }}
+      </span>
+      <span class="lb-name">{{ r.name }} <span *ngIf="r.isMe" class="you-tag">You</span></span>
+      <span class="lb-xp">{{ r.xp }} XP</span>
+    </div>
+    <p class="empty-state" *ngIf="rows().length === 0">No one's on the board yet — be the first to finish a lesson!</p>
+  </div>
+
+  <div class="lb-list card loading-state" *ngIf="loading()">
+    <p>Loading leaderboard…</p>
+  </div>
+
+  <div class="lb-list card error-state" *ngIf="loadError()">
+    <p>Couldn't reach the server. Is the backend running?</p>
+    <button class="btn btn-outline" (click)="retry()">Retry</button>
+  </div>
+
+  <p class="hint" *ngIf="!auth.isLoggedIn()">
+    <a routerLink="/signup">Create a free account</a> to save your XP and appear on the leaderboard.
+  </p>
+</section>

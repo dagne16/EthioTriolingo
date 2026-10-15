@@ -1,0 +1,36 @@
+<section class="auth-page container">
+  <div class="auth-card card">
+    <app-mascot [size]="56" color="purple"></app-mascot>
+    <h1>Create your account</h1>
+    <p class="subtitle">Free — pick your language and course right after this.</p>
+
+    <div class="gender-step">
+     
+      <div class="gender-tabs">
+        <button type="button" class="gender-tab" [class.active]="gender==='female'" (click)="chooseGender('female')">
+          <span class="g-icon">👩</span> Female
+        </button>
+        <button type="button" class="gender-tab" [class.active]="gender==='male'" (click)="chooseGender('male')">
+          <span class="g-icon">👨</span> Male
+        </button>
+      
+      </div>
+    </div>
+
+    <form (ngSubmit)="submit()">
+      <label>Name
+        <input type="text" name="name" [(ngModel)]="name" placeholder="Your name" required>
+      </label>
+      <label>Email
+        <input type="email" name="email" [(ngModel)]="email" placeholder="you@example.com" required>
+      </label>
+      <label>Password
+        <input type="password" name="password" [(ngModel)]="password" placeholder="At least 6 characters" required>
+      </label>
+      <p class="error" *ngIf="error">{{ error }}</p>
+      <button class="btn btn-purple full" type="submit" [disabled]="loading">{{ loading ? 'Creating account…' : 'Sign Up' }}</button>
+    </form>
+
+    <p class="switch-link">Already have an account? <a routerLink="/login">Log in</a></p>
+  </div>
+</section>

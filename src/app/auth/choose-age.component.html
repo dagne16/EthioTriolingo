@@ -1,0 +1,23 @@
+<section class="auth-page container">
+  <div class="auth-card card">
+    <app-mascot [size]="56" color="purple"></app-mascot>
+    <h1>How old are you?</h1>
+    <p class="subtitle">This helps us tailor your experience.</p>
+
+    <div class="gender-step">
+      <input
+        type="number"
+        class="age-input"
+        [(ngModel)]="age"
+        min="5"
+        max="120"
+        placeholder="Enter your age"
+        (keydown.enter)="continue()">
+    </div>
+
+    <p class="error" *ngIf="error">{{ error }}</p>
+    <button class="btn btn-purple full" type="button" [disabled]="loading" (click)="continue()">
+      {{ loading ? 'Saving…' : 'Continue' }}
+    </button>
+  </div>
+</section>

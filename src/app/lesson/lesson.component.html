@@ -1,0 +1,80 @@
+<div class="lesson-page" *ngIf="unit && course">
+
+  <!-- Top bar: close, progress, hearts -->
+  <div class="lesson-topbar container" *ngIf="!finished">
+    <button class="close-btn" (click)="backToLearn()">✕</button>
+    <div class="progress-bar">
+      <div class="progress-bar-fill" [style.width.%]="progressPercent"></div>
+    </div>
+    <div class="hearts">❤️ {{ hearts }}</div>
+  </div>
+
+  <!-- Quiz card -->
+  <div class="quiz-wrap container" *ngIf="!finished && hearts > 0 && currentQuestion as q">
+    <p class="prompt">{{ q.prompt }}</p>
+    <div class="amharic-card">
+      <app-mascot [size]="48"></app-mascot>
+      <p class="amh amharic-phrase">{{ q.sourcePhrase }}</p>
+    </div>
+
+    <div class="options">
+      <button *ngFor="let opt of q.options"
+              class="option"
+              [class.selected]="selectedOption === opt && !answered"
+              [class.correct]="answered && opt === q.answer"
+              [class.incorrect]="answered && selectedOption === opt && opt !== q.answer"
+              [disabled]="answered"
+              (click)="selectOption(opt)">
+        {{ opt }}
+      </button>
+    </div>
+  </div>
+
+  <!-- Feedback footer -->
+  <div class="feedback" *ngIf="!finished && hearts > 0" [class.feedback-correct]="answered && isCorrect" [class.feedback-incorrect]="answered && !isCorrect">
+    <ng-container *ngIf="answered">
+      <p *ngIf="isCorrect" class="feedback-text">
+        {{ t('correct').primary }} <span class="en-caption">({{ t('correct').english }})</span>
+      </p>
+      <p *ngIf="!isCorrect" class="feedback-text">
+        {{ t('correctAnswer').primary }} <b>{{ currentQuestion?.answer }}</b>
+        <span class="en-caption">({{ t('correctAnswer').english }})</span>
+      </p>
+      <p class="explanation">💡 {{ currentQuestion?.explanation }}</p>
+    </ng-container>
+    <button class="btn btn-green check-btn"
+            *ngIf="!answered"
+            [disabled]="!selectedOption"
+            (click)="checkAnswer()">
+      {{ t('check').primary }} <span class="en-caption-btn">({{ t('check').english }})</span>
+    </button>
+    <button class="btn btn-green check-btn" *ngIf="answered" (click)="next()">
+      {{ t('continue').primary }} <span class="en-caption-btn">({{ t('continue').english }})</span>
+    </button>
+  </div>
+
+  <!-- Out of hearts -->
+  <div class="result container" *ngIf="hearts === 0 && !finished">
+    <app-mascot [size]="90"></app-mascot>
+    <h2>{{ t('outOfHearts').primary }} <span class="en-caption">({{ t('outOfHearts').english }})</span></h2>
+    <p>{{ t('score').primary }} ({{ t('score').english }}): {{ correctCount }} / {{ questions.length }}</p>
+    <button class="btn btn-blue" (click)="retryUnit()">{{ t('tryAgain').primary }} <span class="en-caption-btn">({{ t('tryAgain').english }})</span></button>
+    <button class="btn btn-outline" (click)="backToLearn()">{{ t('backToUnits').primary }} <span class="en-caption-btn">({{ t('backToUnits').english }})</span></button>
+  </div>
+
+  <!-- Finished unit -->
+  <div class="result container" *ngIf="finished">
+    <app-mascot [size]="90"></app-mascot>
+    <h2>{{ t('unitComplete').primary }} <span class="en-caption">({{ t('unitComplete').english }})</span></h2>
+    <p>{{ course.amharicName }} — {{ unit.title }}</p>
+    <p>{{ t('score').primary }} ({{ t('score').english }}): {{ correctCount }} / {{ questions.length }}</p>
+    <p class="xp-earned">⭐ +{{ xpEarned }} XP</p>
+    <button class="btn btn-green" (click)="backToLearn()">{{ t('continueLearning').primary }} <span class="en-caption-btn">({{ t('continueLearning').english }})</span></button>
+    <button class="btn btn-outline" (click)="retryUnit()">{{ t('practiceAgain').primary }} <span class="en-caption-btn">({{ t('practiceAgain').english }})</span></button>
+  </div>
+
+</div>
+
+<div class="container" *ngIf="!unit || !course">
+  <p>Lesson not found. <a routerLink="/learn">Go back to Learn</a>.</p>
+</div>

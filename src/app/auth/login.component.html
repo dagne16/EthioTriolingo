@@ -1,0 +1,20 @@
+<section class="auth-page container">
+  <div class="auth-card card">
+    <app-mascot [size]="56"></app-mascot>
+    <h1>Welcome back</h1>
+    <p class="subtitle">Log in to keep your streak going.</p>
+
+    <form (ngSubmit)="submit()">
+      <label>Email
+        <input type="email" name="email" [(ngModel)]="email" placeholder="you@example.com" required>
+      </label>
+      <label>Password
+        <input type="password" name="password" [(ngModel)]="password" placeholder="••••••••" required>
+      </label>
+      <p class="error" *ngIf="error">{{ error }}</p>
+      <button class="btn btn-green full" type="submit" [disabled]="loading">{{ loading ? 'Logging in…' : 'Log In' }}</button>
+    </form>
+
+    <p class="switch-link">Don't have an account? <a routerLink="/signup">Sign up</a></p>
+  </div>
+</section>

@@ -1,0 +1,21 @@
+<section class="auth-page container">
+  <div class="auth-card card">
+    <app-mascot [size]="56" color="purple"></app-mascot>
+    <h1>What do you want to learn?</h1>
+    <p class="subtitle">You can always switch this later on the Courses page.</p>
+
+    <div class="lang-select-grid">
+      <button type="button" class="lang-select-card" *ngFor="let c of options"
+              [class.active]="selected === c.id" (click)="choose(c.id)">
+        <app-flag [country]="c.flag" [size]="28"></app-flag>
+        <span class="lang-select-name">{{ c.name }}</span>
+        <span class="lang-select-check">✓</span>
+      </button>
+    </div>
+
+    <p class="error" *ngIf="error">{{ error }}</p>
+    <button class="btn btn-purple full" type="button" [disabled]="loading" (click)="continue()">
+      {{ loading ? 'Saving…' : 'Proceed' }}
+    </button>
+  </div>
+</section>
